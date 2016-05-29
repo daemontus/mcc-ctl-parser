@@ -7,7 +7,7 @@ pub mod parser;
 mod xml_util;
 
 use std::fmt;
-use CTLFormula::*;
+use Formula::*;
 use Value::*;
 
 /// An evaluable value, either a constant or a place name
@@ -28,7 +28,7 @@ impl fmt::Display for Value {
 
 /// A CTL formula represented by an operator and nested formulas / values.
 #[derive(Clone, Eq, PartialEq, Hash, Debug)]
-pub enum CTLFormula {
+pub enum Formula {
     True,
     False,
     LT(Value, Value),
@@ -36,20 +36,20 @@ pub enum CTLFormula {
     GT(Value, Value),
     GE(Value, Value),
     Fireable(String),
-    Not(Box<CTLFormula>),
-    EX(Box<CTLFormula>),
-    AX(Box<CTLFormula>),
-    EF(Box<CTLFormula>),
-    AF(Box<CTLFormula>),
-    EG(Box<CTLFormula>),
-    AG(Box<CTLFormula>),
-    And(Vec<CTLFormula>),
-    Or(Vec<CTLFormula>),
-    EU(Box<CTLFormula>, Box<CTLFormula>),
-    AU(Box<CTLFormula>, Box<CTLFormula>),
+    Not(Box<Formula>),
+    EX(Box<Formula>),
+    AX(Box<Formula>),
+    EF(Box<Formula>),
+    AF(Box<Formula>),
+    EG(Box<Formula>),
+    AG(Box<Formula>),
+    And(Vec<Formula>),
+    Or(Vec<Formula>),
+    EU(Box<Formula>, Box<Formula>),
+    AU(Box<Formula>, Box<Formula>),
 }
 
-impl fmt::Display for CTLFormula {
+impl fmt::Display for Formula {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             &False => write!(f, "false"),
@@ -74,7 +74,7 @@ impl fmt::Display for CTLFormula {
     }
 }
 
-fn print_list(f: &mut fmt::Formatter, op: &str, items: &Vec<CTLFormula>) -> fmt::Result {
+fn print_list(f: &mut fmt::Formatter, op: &str, items: &Vec<Formula>) -> fmt::Result {
     if items.is_empty() {
         write!(f, "({})", op)
     } else {

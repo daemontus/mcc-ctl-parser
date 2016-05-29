@@ -3,24 +3,24 @@
 use std::io::Read;
 use xml::reader::EventReader;
 use super::*;
-use super::CTLFormula::*;
+use super::Formula::*;
 use super::Value::*;
 use xml_util::*;
 
 //read a list of formulas from parser
-pub fn read_formula_list<T : Read>(parser: &mut EventReader<T>) -> Vec<CTLFormula> {
+pub fn read_formula_list<T: Read>(parser: &mut EventReader<T>) -> Vec<Formula> {
     //read property-set
     collect_inside("property-set", parser, |p, event| {
         expect_start(event, "formula").map(|_| read_formula(p))
     })
 }
 
-pub fn read_formula_list_file(file_name: &str) -> Vec<CTLFormula> {
+pub fn read_formula_list_file(file_name: &str) -> Vec<Formula> {
     parse_file(file_name, read_formula_list)
 }
 
 //formula parsing logic
-fn read_formula<T : Read>(parser: &mut EventReader<T>) -> CTLFormula {
+fn read_formula<T: Read>(parser: &mut EventReader<T>) -> Formula {
     let next_tag = next_tag_open(parser);
     let result = match &*next_tag {
         "true" => True,
@@ -75,29 +75,29 @@ fn read_value<T: Read>(parser: &mut EventReader<T>) -> Value {
 
 // helper functions for creating formulas
 
-fn read_until<T, F>(constructor: F, parser: &mut EventReader<T>) -> CTLFormula
-    where   T : Read, F : Fn(Box<CTLFormula>, Box<CTLFormula>) -> CTLFormula {
+fn read_until<T, F>(constructor: F, parser: &mut EventReader<T>) -> Formula
+    where T: Read, F: Fn(Box<Formula>, Box<Formula>) -> Formula {
     let before = inside("before", parser, read_formula);
     let reach = inside("reach", parser, read_formula);
     constructor(Box::new(before), Box::new(reach))
 }
 
-fn unary_formula<T, F>(constructor: F, parser: &mut EventReader<T>) -> CTLFormula
-    where T : Read, F : Fn(Box<CTLFormula>) -> CTLFormula {
+fn unary_formula<T, F>(constructor: F, parser: &mut EventReader<T>) -> Formula
+    where T: Read, F: Fn(Box<Formula>) -> Formula {
     constructor(Box::new(read_formula(parser)))
 }
 
-fn binary_list_formula<T, F>(constructor: F, parser: &mut EventReader<T>) -> CTLFormula
-    where T: Read, F: Fn(Vec<CTLFormula>) -> CTLFormula {
+fn binary_list_formula<T, F>(constructor: F, parser: &mut EventReader<T>) -> Formula
+    where T: Read, F: Fn(Vec<Formula>) -> Formula {
     constructor(vec![read_formula(parser), read_formula(parser)])
 }
 
-fn atom<T, F>(constructor: F, parser: &mut EventReader<T>) -> CTLFormula
-    where   T : Read, F : Fn(Value, Value) -> CTLFormula {
+fn atom<T, F>(constructor: F, parser: &mut EventReader<T>) -> Formula
+    where T: Read, F: Fn(Value, Value) -> Formula {
     constructor(read_value(parser), read_value(parser))
 }
 
-fn fire<T: Read>(parser: &mut EventReader<T>) -> CTLFormula {
+fn fire<T: Read>(parser: &mut EventReader<T>) -> Formula {
     let name = inside("transition", parser, next_text);
     Fireable(name)
 }
