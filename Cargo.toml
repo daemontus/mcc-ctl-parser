@@ -2,5 +2,15 @@
 name = "mcc-ctl-parser"
 version = "0.1.0"
 authors = ["Samuel Pastva <daemontus@gmail.com>"]
+license = "MIT"
+description = "An xml parser of CTL formulas from MCC for Rust"
+repository = "https://github.com/daemontus/mcc-ctl-parser/"
+readme = "Readme.md"
+keywords = ["ctl", "model checking competition", "mcc", "parser"]
+
+[lib]
+name = "ctl"
+path = "src/lib.rs"
 
 [dependencies]
+xml-rs = "0.3.2"
