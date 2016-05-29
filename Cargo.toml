@@ -1,0 +1,6 @@
+[package]
+name = "mcc-ctl-parser"
+version = "0.1.0"
+authors = ["Samuel Pastva <daemontus@gmail.com>"]
+
+[dependencies]
