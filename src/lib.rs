@@ -1,10 +1,12 @@
 //! Contains definitions of CTL formulas and propositions
 //!
 
+extern crate xml;
+
 pub mod parser;
+mod xml_util;
 
 use std::fmt;
-
 use CTLFormula::*;
 use Value::*;
 
