@@ -42,7 +42,7 @@ pub enum Formula {
     LE(Value, Value),
     GT(Value, Value),
     GE(Value, Value),
-    Fireable(String),
+    Fireable(Vec<String>),
     Not(Box<Formula>),
     EX(Box<Formula>),
     AX(Box<Formula>),
@@ -65,7 +65,10 @@ impl fmt::Display for Formula {
             &GT(ref left, ref right) => write!(f, "{} > {}", left, right),
             &LE(ref left, ref right) => write!(f, "{} <= {}", left, right),
             &GE(ref left, ref right) => write!(f, "{} >= {}", left, right),
-            &Fireable(ref name) => write!(f, "fire {}", name),
+            &Fireable(ref items) => {
+                let r = write!(f, "fire: ");
+                items.into_iter().fold(r, |acc, item| acc.and_then(|_| write!(f, " {}", item)))
+            },
             &Not(ref inner) => write!(f, "!({})", inner),
             &EX(ref inner) => write!(f, "EX({})", inner),
             &AX(ref inner) => write!(f, "AX({})", inner),

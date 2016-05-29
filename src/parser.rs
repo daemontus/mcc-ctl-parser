@@ -10,7 +10,8 @@ use xml_util::*;
 //read a list of formulas from parser
 pub fn read_formula_list<T: Read>(parser: &mut EventReader<T>) -> Vec<Formula> {
     //read property-set
-    collect_inside("property-set", parser, |p, event| {
+    expect_tag_open("property-set", parser);
+    collect_until("property-set", parser, |p, event| {
         expect_start(event, "formula").map(|_| read_formula(p))
     })
 }
@@ -55,7 +56,7 @@ fn read_formula<T: Read>(parser: &mut EventReader<T>) -> Formula {
             panic!("Unexpected tag {:?}", other);
         }
     };
-    expect_tag_close(&*next_tag, parser);
+    //expect_tag_close(&*next_tag, parser);
     result
 }
 
@@ -98,6 +99,12 @@ fn atom<T, F>(constructor: F, parser: &mut EventReader<T>) -> Formula
 }
 
 fn fire<T: Read>(parser: &mut EventReader<T>) -> Formula {
-    let name = inside("transition", parser, next_text);
-    Fireable(name)
+    let values = collect_until("is-fireable", parser, |p, event| {
+        if expect_start(event, "transition").is_some() {
+            let name = next_text(p);
+            expect_tag_close("transition", p);
+            Some(name)
+        } else { None }
+    });
+    Fireable(values)
 }

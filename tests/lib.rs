@@ -198,13 +198,13 @@ fn cardinality_10() {
 fn fireablility_15() {
     let formula_list = read_formula_list_file("tests/inputs/CTLFireability.xml");
     let f = And(vec![
-        Fireable("k5".to_string()),
+        Fireable(vec!["k5".to_string()]),
         Not(Box::new(
             AF(Box::new(
                 Not(Box::new(
                     Or(vec![
-                        Fireable("k17".to_string()),
-                        Fireable("k52".to_string()),
+                        Fireable(vec!["k17".to_string(), "k20".to_string(), "k33".to_string()]),
+                        Fireable(vec!["k52".to_string()]),
                     ])
                 ))
             ))
@@ -221,11 +221,11 @@ fn fireablility_14() {
         EF(Box::new(
             And(vec![
                     Not(Box::new(
-                        Fireable("k13".to_string())
+                        Fireable(vec!["k13".to_string()])
                     )),
                     Or(vec![
-                        Fireable("k45".to_string()),
-                        Fireable("k11".to_string()),
+                        Fireable(vec!["k45".to_string()]),
+                        Fireable(vec!["k11".to_string()]),
                     ])
             ])
         ))

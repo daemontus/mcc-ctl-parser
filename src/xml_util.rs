@@ -22,11 +22,10 @@ pub fn inside<T, R, F>(tag: &str, parser: &mut EventReader<T>, action: F) -> R
     result
 }
 
-///Expect opening tag and then collect items until closing tag is encountered
-///Action will be called
-pub fn collect_inside<T, F, R>(tag: &str, parser: &mut EventReader<T>, action: F) -> Vec<R>
+///Collect items until closing tag is encountered
+///Action will be called for every event
+pub fn collect_until<T, F, R>(tag: &str, parser: &mut EventReader<T>, action: F) -> Vec<R>
     where T: Read, F: Fn(&mut EventReader<T>, &XmlEvent) -> Option<R> {
-    expect_tag_open(tag, parser);
     //note: We can't really use closures here because we would have to lock the vector
     let mut results = Vec::new();
     loop {
@@ -68,7 +67,7 @@ pub fn next_tag_open<T: Read>(parser: &mut EventReader<T>) -> String {
 ///Comsume parser events until the next text event is encountered
 pub fn next_text<T: Read>(parser: &mut EventReader<T>) -> String {
     drop_until(parser, |_, e| match_text(e)).unwrap_or_else( ||
-        panic!("Can't find next start tag")
+        panic!("Can't find next text")
     )
 }
 

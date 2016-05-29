@@ -382,6 +382,8 @@
                 <disjunction>
                   <is-fireable>
                     <transition>k17</transition>
+                    <transition>k20</transition>
+                    <transition>k33</transition>
                   </is-fireable>
                   <is-fireable>
                     <transition>k52</transition>
