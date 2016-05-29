@@ -17,6 +17,13 @@ pub enum Value {
     Ref(String),
 }
 
+impl Value {
+
+    pub fn new_ref(name: &str) -> Value {
+        Ref(name.to_string())
+    }
+}
+
 impl fmt::Display for Value {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
