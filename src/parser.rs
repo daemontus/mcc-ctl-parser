@@ -56,7 +56,6 @@ fn read_formula<T: Read>(parser: &mut EventReader<T>) -> Formula {
             panic!("Unexpected tag {:?}", other);
         }
     };
-    //expect_tag_close(&*next_tag, parser);
     result
 }
 
@@ -67,10 +66,11 @@ fn read_value<T: Read>(parser: &mut EventReader<T>) -> Value {
         "integer-constant" => Const(next_text(parser)
                 .parse().expect("Error parsing integer constant")
         ),
-        "tokens-count" => Ref(next_text(parser)),
+        "tokens-count" => Ref(collect_until("tokens-count", parser, |_, e| {
+            match_text(e)
+        })),
         other => panic!("Unexpected tag {:?}", other),
     };
-    expect_tag_close(&*next_tag, parser);
     result
 }
 

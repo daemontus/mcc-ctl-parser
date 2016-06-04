@@ -14,7 +14,7 @@ fn cardinality_0() {
             LE(Const(1), Value::new_ref("KdStarG"))
         ), Box::new(
             And(vec![
-                LE(Value::new_ref("Gab1"), Value::new_ref("AktP3")),
+                LE(Ref(vec!["Gab1".to_string(), "Enz".to_string()]), Value::new_ref("AktP3")),
                 LE(Const(1), Value::new_ref("Enz"))
             ])
         ))
@@ -54,7 +54,7 @@ fn cardinality_3() {
     let f = And(vec![
         EG(Box::new(
             AX(Box::new(
-                LE(Value::new_ref("KdStarGStar"), Value::new_ref("GStarPgP3"))
+                LE(Value::new_ref("KdStarGStar"), Ref(vec!["GStarPgP3".to_string(), "Enz".to_string()]))
             ))
         )),
         And(vec![

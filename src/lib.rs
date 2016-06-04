@@ -14,13 +14,13 @@ use Value::*;
 #[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub enum Value {
     Const(u32),
-    Ref(String),
+    Ref(Vec<String>),
 }
 
 impl Value {
 
     pub fn new_ref(name: &str) -> Value {
-        Ref(name.to_string())
+        Ref(vec![name.to_string()])
     }
 }
 
@@ -28,7 +28,7 @@ impl fmt::Display for Value {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             &Const(ref v) => write!(f, "{}", v),
-            &Ref(ref v) => write!(f, "{}", v),
+            &Ref(ref v) => write!(f, "{:?}", v),
         }
     }
 }

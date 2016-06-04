@@ -20,6 +20,7 @@
                 <integer-le>
                   <tokens-count>
                     <place>Gab1</place>
+                    <place>Enz</place>
                   </tokens-count>
                   <tokens-count>
                     <place>AktP3</place>
@@ -95,6 +96,7 @@
                   </tokens-count>
                   <tokens-count>
                     <place>GStarPgP3</place>
+                    <place>Enz</place>
                   </tokens-count>
                 </integer-le>
               </next>
